@@ -5,26 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Snake Game</title>
   </head>
-
+  <script defer type="module" src="snake.js"></script>
   <body>
     <canvas id="gameCanvas" width="300" height="300"></canvas>
   </body>
-  <script>
-    let snake = [
-      { x: 150, y: 150 },
-      { x: 140, y: 150 },
-      { x: 130, y: 150 },
-      { x: 120, y: 150 },
-      { x: 110, y: 150 },
-    ];
-    const CANVAS_BG_COLOR = "white";
-    const CANVAS_BORDER_COLOR = "black";
-    const canvas = document.querySelector("#gameCanvas");
-    const ctx = canvas.getContext("2d");
-
-    ctx.fillStyle = CANVAS_BG_COLOR;
-    ctx.strokestyle = CANVAS_BORDER_COLOR;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeRect(0, 0, canvas.width, canvas.height);
-  </script>
 </html>
