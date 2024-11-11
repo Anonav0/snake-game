@@ -1,3 +1,12 @@
+//Initializing constants and variables
+const GAME_SPEED = 100;
+const CANVAS_BG_COLOR = "white";
+const CANVAS_BORDER_COLOR = "black";
+const SNAKE_COLOR = "lightgreen";
+const SNAKE_BORDER_COLOR = "darkgreen";
+const canvas = document.querySelector("#gameCanvas");
+const ctx = canvas.getContext("2d");
+
 let snake = [
   { x: 150, y: 150 },
   { x: 140, y: 150 },
@@ -5,36 +14,66 @@ let snake = [
   { x: 120, y: 150 },
   { x: 110, y: 150 },
 ];
-const CANVAS_BG_COLOR = "white";
-const CANVAS_BORDER_COLOR = "black";
-const canvas = document.querySelector("#gameCanvas");
-const ctx = canvas.getContext("2d");
 
+//User score
+let score = 0;
+// Horizontal velocity
 let dx = 10;
+// Vertical velocity
 let dy = 0;
-
-let changingDirection = false;
-
 // Food x-coordinate
 let foodX;
 // Food y-coordinate
 let foodY;
 
-let score = 0;
+let changingDirection = false;
 
+/////////////////////////////////////////////////////////
+
+const randomTen = function (min, max) {
+  return Math.round((Math.random() * (max - min) + min) / 10) * 10;
+};
+
+////////////////////////////////////
+// CANVAS FUNCTIONS
 const clearCanvas = () => {
   ctx.fillStyle = CANVAS_BG_COLOR;
   ctx.strokestyle = CANVAS_BORDER_COLOR;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.strokeRect(0, 0, canvas.width, canvas.height);
 };
+////////////////////////////////
 
+////////////////////////////////////
+// SNAKE FUNCTIONS
 const drawSnakePart = (snakePart) => {
-  ctx.fillStyle = "lightgreen";
-  ctx.strokestyle = "darkgreen";
+  ctx.fillStyle = SNAKE_COLOR;
+  ctx.strokestyle = SNAKE_BORDER_COLOR;
 
   ctx.fillRect(snakePart.x, snakePart.y, 10, 10);
   ctx.strokeRect(snakePart.x, snakePart.y, 10, 10);
+};
+
+const drawSnake = () => {
+  snake.forEach(drawSnakePart);
+};
+
+const advanceSnake = () => {
+  const head = {
+    x: snake[0].x + dx,
+    y: snake[0].y + dy,
+  };
+
+  snake.unshift(head);
+
+  const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
+  if (didEatFood) {
+    score += 10;
+    document.getElementById("score").innerHTML = score;
+    createFood();
+  } else {
+    snake.pop();
+  }
 };
 
 function changeDirection(event) {
@@ -75,42 +114,10 @@ function changeDirection(event) {
     dy = 10;
   }
 }
+/////////////////////////////////////////
 
-const drawSnake = () => {
-  snake.forEach(drawSnakePart);
-};
-
-const advanceSnake = () => {
-  const head = {
-    x: snake[0].x + dx,
-    y: snake[0].y + dy,
-  };
-
-  snake.unshift(head);
-
-  const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
-  if (didEatFood) {
-    score += 10;
-    document.getElementById("score").innerHTML = score;
-    createFood();
-  } else {
-    snake.pop();
-  }
-};
-
-const didGameEnd = () => {
-  for (let i = 4; i < snake.length; i++) {
-    if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true;
-  }
-
-  const hitLeftWall = snake[0].x < 0;
-  const hitRightWall = snake[0].x > gameCanvas.width - 10;
-  const hitToptWall = snake[0].y < 0;
-  const hitBottomWall = snake[0].y > gameCanvas.height - 10;
-
-  return hitLeftWall || hitRightWall || hitToptWall || hitBottomWall;
-};
-
+////////////////////////////////////////
+//FOOD FUNCTIONS
 const createFood = () => {
   foodX = randomTen(0, canvas.width - 10);
   foodY = randomTen(0, gameCanvas.height - 10);
@@ -127,6 +134,23 @@ const drawFood = () => {
   ctx.fillRect(foodX, foodY, 10, 10);
   ctx.strokeRect(foodX, foodY, 10, 10);
 };
+//////////////////////////////////////////////
+
+//////////////////////////////////////////////
+//GAME MECHANICS FUNCTIONS
+const didGameEnd = () => {
+  for (let i = 4; i < snake.length; i++) {
+    if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true;
+  }
+
+  const hitLeftWall = snake[0].x < 0;
+  const hitRightWall = snake[0].x > gameCanvas.width - 10;
+  const hitToptWall = snake[0].y < 0;
+  const hitBottomWall = snake[0].y > gameCanvas.height - 10;
+
+  return hitLeftWall || hitRightWall || hitToptWall || hitBottomWall;
+};
+
 const main = function () {
   if (didGameEnd()) return;
   setTimeout(() => {
@@ -138,13 +162,11 @@ const main = function () {
     drawSnake();
 
     main();
-  }, 100);
+  }, GAME_SPEED);
 };
 
-const randomTen = function (min, max) {
-  return Math.round((Math.random() * (max - min) + min) / 10) * 10;
-};
-
+////////////////////////////////////////
+//GAME INITIALIZING AND STARTING
+document.addEventListener("keydown", changeDirection);
 createFood();
 main();
-document.addEventListener("keydown", changeDirection);
