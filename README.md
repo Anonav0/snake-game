@@ -1,6 +1,10 @@
+![ezgif com-optimize(28)](https://github.com/user-attachments/assets/a6d70d34-5b8e-4fa0-b84a-bbb89c4ff3d6)
+
 # Snake Game
 
 This is a simple Snake Game built with pure JavaScript, HTML, and CSS. Control the snake to eat the food, grow longer, and try to avoid hitting the walls or yourself!
+
+checkout the game on : [SnakeGame](https://js-godmode.github.io/snake-game/)
 
 ## Table of Contents
 
@@ -26,7 +30,7 @@ This is a simple Snake Game built with pure JavaScript, HTML, and CSS. Control t
 
     Copy code
 
-    `git clone https://github.com/JS-GodMode/snake-game.git`
+    `git clone https://github.com/yourusername/snake-game.git`
 
 2.  Navigate to the project directory:
 
@@ -56,7 +60,7 @@ Contributions are welcome! If you'd like to improve this project:
 
 ## Author
 
-- **[Swarnavo Khanra (Anonav0)]** - [https://www.github.com/Anonav0]
+- **Swarnavo Khanra** - [Anonav0](https://www.github.com/Anonav0)
 
 ## Acknowledgements
 
