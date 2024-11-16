@@ -12,9 +12,21 @@
     <script defer type="module" src="script.js"></script>
   </head>
   <body>
-    <section>
-      <div id="score">0</div>
-      <canvas id="gameCanvas" width="300" height="300"></canvas>
+    <section class="section-main">
+      <section class="section-game">
+        <div class="score">0</div>
+        <canvas class="gameCanvas" width="300px" height="300px"></canvas>
+      </section>
+      <section class="section-controls">
+        <div class="controls">
+          <button class="hidden">1</button>
+          <button disabled>&#8593;</button>
+          <button class="hidden">3</button>
+          <button disabled>&#8592;</button>
+          <button disabled>&#8595;</button>
+          <button disabled>&#8594;</button>
+        </div>
+      </section>
     </section>
   </body>
 </html>

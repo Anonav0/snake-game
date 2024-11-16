@@ -4,7 +4,7 @@ const CANVAS_BG_COLOR = "white";
 const CANVAS_BORDER_COLOR = "black";
 const SNAKE_COLOR = "lightgreen";
 const SNAKE_BORDER_COLOR = "darkgreen";
-const canvas = document.querySelector("#gameCanvas");
+const canvas = document.querySelector(".gameCanvas");
 const ctx = canvas.getContext("2d");
 
 let snake = [
@@ -39,8 +39,13 @@ const randomTen = function (min, max) {
 const clearCanvas = () => {
   ctx.fillStyle = CANVAS_BG_COLOR;
   ctx.strokestyle = CANVAS_BORDER_COLOR;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+  // Set canvas dimensions based on CSS size (max-width: 300px)
+  // canvas.width = canvas.offsetWidth;
+  // console.log(canvas.width);
+  // canvas.height = canvas.offsetHeight;
+  ctx.fillRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+  ctx.strokeRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
 };
 ////////////////////////////////
 
@@ -69,7 +74,7 @@ const advanceSnake = () => {
   const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
   if (didEatFood) {
     score += 10;
-    document.getElementById("score").innerHTML = score;
+    document.querySelector(".score").innerHTML = score;
     createFood();
   } else {
     snake.pop();
@@ -81,6 +86,7 @@ function changeDirection(event) {
   const RIGHT_KEY = 39;
   const UP_KEY = 38;
   const DOWN_KEY = 40;
+  let button;
   /**
    * Prevent the snake from reversing
    * Example scenario:
@@ -120,7 +126,7 @@ function changeDirection(event) {
 //FOOD FUNCTIONS
 const createFood = () => {
   foodX = randomTen(0, canvas.width - 10);
-  foodY = randomTen(0, gameCanvas.height - 10);
+  foodY = randomTen(0, canvas.height - 10);
 
   snake.forEach(function isFoodOnSnake(part) {
     const foodIsOnSnake = part.x == foodX && part.y == foodY;
@@ -144,9 +150,9 @@ const didGameEnd = () => {
   }
 
   const hitLeftWall = snake[0].x < 0;
-  const hitRightWall = snake[0].x > gameCanvas.width - 10;
+  const hitRightWall = snake[0].x > canvas.width - 10;
   const hitToptWall = snake[0].y < 0;
-  const hitBottomWall = snake[0].y > gameCanvas.height - 10;
+  const hitBottomWall = snake[0].y > canvas.height - 10;
 
   return hitLeftWall || hitRightWall || hitToptWall || hitBottomWall;
 };
@@ -160,13 +166,57 @@ const main = function () {
     advanceSnake();
 
     drawSnake();
-
     main();
   }, GAME_SPEED);
 };
 
 ////////////////////////////////////////
 //GAME INITIALIZING AND STARTING
+document.addEventListener("keydown", (event) => {
+  let button;
+  switch (event.key) {
+    case "ArrowUp":
+      button = document.querySelector("button[disabled]:nth-child(2)");
+      break;
+    case "ArrowLeft":
+      button = document.querySelector("button[disabled]:nth-child(4)");
+      break;
+    case "ArrowDown":
+      button = document.querySelector("button[disabled]:nth-child(5)");
+      break;
+    case "ArrowRight":
+      button = document.querySelector("button[disabled]:nth-child(6)");
+      break;
+    default:
+      return; // Exit if it's not an arrow key
+  }
+  if (button) {
+    button.classList.add("active");
+  }
+});
+
+document.addEventListener("keyup", (event) => {
+  let button;
+  switch (event.key) {
+    case "ArrowUp":
+      button = document.querySelector("button[disabled]:nth-child(2)");
+      break;
+    case "ArrowLeft":
+      button = document.querySelector("button[disabled]:nth-child(4)");
+      break;
+    case "ArrowDown":
+      button = document.querySelector("button[disabled]:nth-child(5)");
+      break;
+    case "ArrowRight":
+      button = document.querySelector("button[disabled]:nth-child(6)");
+      break;
+    default:
+      return;
+  }
+  if (button) {
+    button.classList.remove("active");
+  }
+});
 document.addEventListener("keydown", changeDirection);
 createFood();
 main();
