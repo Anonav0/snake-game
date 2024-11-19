@@ -86,7 +86,7 @@ function changeDirection(event) {
   const RIGHT_KEY = 39;
   const UP_KEY = 38;
   const DOWN_KEY = 40;
-  let button;
+
   /**
    * Prevent the snake from reversing
    * Example scenario:
@@ -120,6 +120,37 @@ function changeDirection(event) {
     dy = 10;
   }
 }
+
+function changeDirectionByButton(btnDirection) {
+  // console.log(btnDirection);
+  // debugger;
+  const goingUp = dy === -10;
+  const goingDown = dy === 10;
+  const goingRight = dx === 10;
+  const goingLeft = dx === -10;
+  if (changingDirection) return;
+  changingDirection = true;
+
+  if (btnDirection === "up" && !goingDown) {
+    dx = 0;
+    dy = -10;
+  }
+
+  if (btnDirection === "down" && !goingUp) {
+    dx = 0;
+    dy = 10;
+  }
+
+  if (btnDirection === "left" && !goingRight) {
+    dx = -10;
+    dy = 0;
+  }
+
+  if (btnDirection === "right" && !goingLeft) {
+    dx = 10;
+    dy = 0;
+  }
+}
 /////////////////////////////////////////
 
 ////////////////////////////////////////
@@ -151,10 +182,10 @@ const didGameEnd = () => {
 
   const hitLeftWall = snake[0].x < 0;
   const hitRightWall = snake[0].x > canvas.width - 10;
-  const hitToptWall = snake[0].y < 0;
+  const hitTopWall = snake[0].y < 0;
   const hitBottomWall = snake[0].y > canvas.height - 10;
 
-  return hitLeftWall || hitRightWall || hitToptWall || hitBottomWall;
+  return hitLeftWall || hitRightWall || hitTopWall || hitBottomWall;
 };
 
 const main = function () {
@@ -176,16 +207,16 @@ document.addEventListener("keydown", (event) => {
   let button;
   switch (event.key) {
     case "ArrowUp":
-      button = document.querySelector("button[disabled]:nth-child(2)");
+      button = document.querySelector("button:nth-child(2)");
       break;
     case "ArrowLeft":
-      button = document.querySelector("button[disabled]:nth-child(4)");
+      button = document.querySelector("button:nth-child(4)");
       break;
     case "ArrowDown":
-      button = document.querySelector("button[disabled]:nth-child(5)");
+      button = document.querySelector("button:nth-child(5)");
       break;
     case "ArrowRight":
-      button = document.querySelector("button[disabled]:nth-child(6)");
+      button = document.querySelector("button:nth-child(6)");
       break;
     default:
       return; // Exit if it's not an arrow key
@@ -199,16 +230,16 @@ document.addEventListener("keyup", (event) => {
   let button;
   switch (event.key) {
     case "ArrowUp":
-      button = document.querySelector("button[disabled]:nth-child(2)");
+      button = document.querySelector("button:nth-child(2)");
       break;
     case "ArrowLeft":
-      button = document.querySelector("button[disabled]:nth-child(4)");
+      button = document.querySelector("button:nth-child(4)");
       break;
     case "ArrowDown":
-      button = document.querySelector("button[disabled]:nth-child(5)");
+      button = document.querySelector("button:nth-child(5)");
       break;
     case "ArrowRight":
-      button = document.querySelector("button[disabled]:nth-child(6)");
+      button = document.querySelector("button:nth-child(6)");
       break;
     default:
       return;
@@ -217,6 +248,32 @@ document.addEventListener("keyup", (event) => {
     button.classList.remove("active");
   }
 });
+const buttons = {
+  up: document.querySelector('button[data-direction="up"]'),
+  left: document.querySelector('button[data-direction="left"]'),
+  down: document.querySelector('button[data-direction="down"]'),
+  right: document.querySelector('button[data-direction="right"]'),
+};
+
+// debugger;
+buttons.up.addEventListener("click", () => {
+  changeDirectionByButton("up");
+});
+buttons.down.addEventListener("click", () => {
+  changeDirectionByButton("down");
+});
+buttons.left.addEventListener("click", () => {
+  changeDirectionByButton("left");
+});
+buttons.right.addEventListener("click", () => {
+  changeDirectionByButton("right");
+});
+
 document.addEventListener("keydown", changeDirection);
+
+// buttons.up.addEventListener("click", changeDirectionUp);
+// buttons.up.addEventListener("click", changeDirectionDown);
+// buttons.up.addEventListener("click", changeDirectionLeft);
+// buttons.up.addEventListener("click", changeDirectionRight);
 createFood();
 main();

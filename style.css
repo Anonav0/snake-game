@@ -43,7 +43,7 @@ body {
   max-width: 300px; /* Limits the canvas width */
   max-height: 300px; /* Limits the canvas height */
   aspect-ratio: 1/1;
-  border: 2px solid #343a40; /* Optional: add border for visibility */
+  /* border: 2px solid #343a40; Optional: add border for visibility */
 }
 
 .section-controls {
